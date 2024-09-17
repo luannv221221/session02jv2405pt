@@ -19,4 +19,9 @@ public class CategoryServiceImp implements CategoryService{
     public Category save(Category category) {
         return categoryRepository.save(category);
     }
+
+    @Override
+    public Category findCategoryById(Long id) {
+        return categoryRepository.findById(id).orElse(null);
+    }
 }
