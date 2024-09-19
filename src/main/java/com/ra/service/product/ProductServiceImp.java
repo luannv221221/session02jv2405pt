@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService{
@@ -18,16 +19,14 @@ public class ProductServiceImp implements ProductService{
         // biến đỏi từ entity ==> DTO
         List<Product> products = this.productRepository.findAll();
         ProductResponseDTO responseDTO = new ProductResponseDTO();
-        List<ProductResponseDTO> list = new ArrayList<>();
-        for (Product product : products) {
-            responseDTO.setProductId(product.getProductId());
-            responseDTO.setProductName(product.getProductName());
-            responseDTO.setPrice(product.getPrice());
-            responseDTO.setImage(product.getImage());
-            responseDTO.setCategoryName(product.getCategory().getCategoryName());
-            list.add(responseDTO);
-        }
-        return list;
+
+        return products.stream().map(entity->
+                new ProductResponseDTO(entity.getProductId(),
+                        entity.getProductName(),
+                        entity.getPrice(),
+                        entity.getImage(),
+                        entity.getCategory().getCategoryName())).collect(Collectors.toList());
+
     }
 
     @Override

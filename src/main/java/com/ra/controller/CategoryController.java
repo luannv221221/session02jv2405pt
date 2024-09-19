@@ -3,6 +3,9 @@ package com.ra.controller;
 import com.ra.model.entity.Category;
 import com.ra.service.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +19,12 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
     @GetMapping("")
-    public ResponseEntity<List<Category>> findAll(){
-        List<Category> categories = categoryService.findAll();
+    public ResponseEntity<Page<Category>> findAll(
+        @RequestParam(name = "page",defaultValue = "0") int page,
+        @RequestParam(name = "limit",defaultValue = "5") int limit
+    ){
+        Pageable pageable = PageRequest.of(page,limit);
+        Page<Category> categories = categoryService.paginate(pageable);
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
