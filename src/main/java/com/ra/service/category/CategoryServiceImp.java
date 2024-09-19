@@ -24,4 +24,9 @@ public class CategoryServiceImp implements CategoryService{
     public Category findCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public void delete(Long id) {
+        categoryRepository.deleteById(id);
+    }
 }
