@@ -6,6 +6,7 @@ import com.ra.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +17,17 @@ public class ProductServiceImp implements ProductService{
     public List<ProductResponseDTO> findAll() {
         // biến đỏi từ entity ==> DTO
         List<Product> products = this.productRepository.findAll();
-
-//        return this.productRepository.findAll();
+        ProductResponseDTO responseDTO = new ProductResponseDTO();
+        List<ProductResponseDTO> list = new ArrayList<>();
+        for (Product product : products) {
+            responseDTO.setProductId(product.getProductId());
+            responseDTO.setProductName(product.getProductName());
+            responseDTO.setPrice(product.getPrice());
+            responseDTO.setImage(product.getImage());
+            responseDTO.setCategoryName(product.getCategory().getCategoryName());
+            list.add(responseDTO);
+        }
+        return list;
     }
 
     @Override
